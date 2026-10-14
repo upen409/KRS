@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRS - Tax Invoice Generator</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            800: '#1e3a8a',
+                            900: '#0f172a',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for official bill look & print media handling */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .invoice-container {
+                box-shadow: none !important;
+                border: 2px solid #000 !important;
+                padding: 12px !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                border-radius: 0 !important;
+            }
+            input, select, textarea {
+                border: none !important;
+                background: transparent !important;
+                padding: 0 !important;
+                outline: none !important;
+                resize: none !important;
+            }
+            /* Hide dropdown arrow in print */
+            select {
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+            }
+            .border-print {
+                border-color: #000 !important;
+            }
+            .table-border, .table-border th, .table-border td {
+                border-color: #000 !important;
+            }
+        }
+
+        /* Number inputs styling */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-900 min-h-screen py-6 px-2 sm:px-4">
+
+    <!-- Top Action Toolbar (Hidden during Print / PDF generation) -->
+    <div class="max-w-5xl mx-auto mb-6 no-print flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3">
+            <div class="bg-blue-900 text-white font-black px-3 py-1.5 rounded-lg text-lg">
+                KRS
+            </div>
+            <div>
+                <h1 class="font-bold text-slate-800 text-lg leading-tight">Tax Invoice Generator</h1>
+                <p class="text-xs text-slate-500">Krishna Refrigeration Service</p>
+            </div>
+        </div>
+
+        <div class="flex items-center flex-wrap gap-2">
+            <button onclick="addRow()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow transition flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i> Add Item Row
+            </button>
+            <button onclick="window.print()" class="bg-blue-900 hover:bg-blue-800 text-white px-5 py-2 rounded-xl text-sm font-semibold shadow transition flex items-center gap-2">
+                <i class="fa-solid fa-print"></i> Print / Save PDF
+            </button>
+            <button onclick="resetInvoice()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
+                <i class="fa-solid fa-rotate-left"></i> Reset
+            </button>
+        </div>
+    </div>
+
+    <!-- Printable Invoice Template Container -->
+    <div class="invoice-container max-w-5xl mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-300 text-xs sm:text-sm font-sans">
+        
+        <!-- Header Info Bar -->
+        <div class="border-b-2 border-slate-800 pb-3 mb-3">
+            <div class="flex justify-between items-start gap-2">
+                <div class="text-xs font-semibold text-slate-800">
+                    GSTIN : <span class="font-bold">24BSQPK1253E1ZW</span>
+                </div>
+                <div class="text-center font-bold text-xs uppercase bg-slate-100 px-3 py-1 border border-slate-300 rounded">
+                    TAX INVOICE<br><span class="text-[10px] font-normal">CASH / DEBIT MEMO</span>
+                </div>
+                <div class="text-right text-[11px] font-medium text-slate-600 hidden sm:block">
+                    Established Since 1998
+                </div>
+            </div>
+
+            <!-- Brand Logo & Address Header -->
+            <div class="grid grid-cols-12 gap-2 items-center mt-2">
+                <div class="col-span-12 md:col-span-7 flex items-center gap-3">
+                    <div class="border-2 border-slate-800 p-2 text-center rounded w-20 shrink-0">
+                        <div class="font-black text-xl leading-none tracking-wider text-slate-900">KRS</div>
+                        <div class="text-[8px] font-bold tracking-widest mt-0.5">SINCE 1998</div>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">KRISHNA</h2>
+                        <h3 class="text-xs sm:text-sm font-bold text-slate-700 tracking-wider">REFRIGERATION SERVICE</h3>
+                    </div>
+                </div>
+
+                <div class="col-span-12 md:col-span-5 text-left md:text-right text-[11px] text-slate-700 space-y-0.5 border-t md:border-t-0 pt-2 md:pt-0 border-slate-200">
+                    <p class="leading-tight"><i class="fa-solid fa-location-dot text-slate-800 mr-1"></i> 7/8, Pramukh Plaza, Nr. Meldi Mataji Mandir,</p>
+                    <p class="leading-tight">Madhuram Bypass Road, Junagadh - 362 015</p>
+                    <p><i class="fa-solid fa-phone text-slate-800 mr-1"></i> 98981 06164 &nbsp;|&nbsp; <i class="fa-solid fa-envelope text-slate-800 mr-1"></i> vipulkacha1538@gmail.com</p>
+                </div>
+            </div>
+
+            <div class="text-center text-xs font-bold text-slate-800 mt-2 bg-slate-100 py-1 border-t border-b border-slate-300">
+                All Types of Commercial Refrigerator Sales & Service
+            </div>
+        </div>
+
+        <!-- Customer & Invoice Metadata Section -->
+        <div class="grid grid-cols-12 gap-x-4 gap-y-2 border-b-2 border-slate-800 pb-3 mb-3 text-xs">
+            <!-- Customer Information (Left Side) -->
+            <div class="col-span-12 md:col-span-7 space-y-1.5 pr-0 md:pr-2 border-b md:border-b-0 pb-2 md:pb-0 border-slate-200">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold w-20 shrink-0">Name :</span>
+                    <input type="text" id="cust-name" class="w-full border-b border-slate-300 focus:border-slate-800 px-1 py-0.5 outline-none" placeholder="Customer / Firm Name">
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-bold w-20 shrink-0">Address :</span>
+                    <input type="text" id="cust-address" class="w-full border-b border-slate-300 focus:border-slate-800 px-1 py-0.5 outline-none" placeholder="Customer Address">
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-bold w-20 shrink-0">GSTIN :</span>
+                    <input type="text" id="cust-gstin" class="w-full border-b border-slate-300 focus:border-slate-800 px-1 py-0.5 outline-none uppercase" placeholder="Customer GSTIN (Optional)">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold w-20 shrink-0">State :</span>
+                        <input type="text" id="cust-state" value="Gujarat" class="w-full border-b border-slate-300 focus:border-slate-800 px-1 py-0.5 outline-none">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold shrink-0">State Code :</span>
+                        <input type="text" id="cust-state-code" value="24" class="w-full border-b border-slate-300 focus:border-slate-800 px-1 py-0.5 outline-none">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoice Details (Right Side) -->
+            <div class="col-span-12 md:col-span-5 space-y-1.5 pl-0 md:pl-2 border-l-0 md:border-l border-slate-300">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold w-28 shrink-0">Inv. No. :</span>
+                    <input type="text" id="inv-no" class="w-full font-semibold border-b border-slate-300 focus:border-slate-800 px-1 py-0.5 outline-none" placeholder="KRS/2026/001">
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-bold w-28 shrink-0">Inv. Date :</span>
+                    <input type="date" id="inv-date" class="w-full border-b border-slate-300 focus:border-slate-800 px-1 py-0.5 outline-none">
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-bold w-28 shrink-0">Dt. of Supply :</span>
+                    <input type="date" id="supply-date" class="w-full border-b border-slate-300 focus:border-slate-800 px-1 py-0.5 outline-none">
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-bold w-28 shrink-0">Place of Supply :</span>
+                    <input type="text" id="place-supply" value="Junagadh" class="w-full border-b border-slate-300 focus:border-slate-800 px-1 py-0.5 outline-none">
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Itemized Table -->
+        <div class="overflow-x-auto mb-2">
+            <table class="w-full border-collapse border border-slate-800 text-xs table-border">
+                <thead>
+                    <tr class="bg-slate-800 text-white font-bold text-center">
+                        <th class="border border-slate-800 p-1.5 w-12">Sr. No.</th>
+                        <th class="border border-slate-800 p-1.5">Description of Goods / Service</th>
+                        <th class="border border-slate-800 p-1.5 w-24">HSN Code</th>
+                        <th class="border border-slate-800 p-1.5 w-16">Qty.</th>
+                        <th class="border border-slate-800 p-1.5 w-24">Rate (₹)</th>
+                        <th class="border border-slate-800 p-1.5 w-28">Amount Rs.</th>
+                        <th class="border border-slate-800 p-1.5 w-10 no-print"></th>
+                    </tr>
+                </thead>
+                <tbody id="invoice-items">
+                    <!-- Default initial rows populated by script -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add Item Button for convenience -->
+        <div class="no-print mb-4">
+            <button onclick="addRow()" class="text-xs bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold px-3 py-1.5 rounded transition inline-flex items-center gap-1">
+                <i class="fa-solid fa-plus"></i> Add Line Item
+            </button>
+        </div>
+
+        <!-- Totals & Calculations Section -->
+        <div class="border border-slate-800 mb-3">
+            <div class="grid grid-cols-12 divide-y sm:divide-y-0 sm:divide-x divide-slate-800">
+                
+                <!-- Amount in Words & Bank Details Left Block -->
+                <div class="col-span-12 sm:col-span-7 p-2 flex flex-col justify-between space-y-3">
+                    <div>
+                        <div class="font-bold text-xs border-b border-slate-200 pb-1 mb-1">
+                            Amount in Words :
+                        </div>
+                        <div id="amount-in-words" class="italic font-semibold text-slate-800 min-h-[24px] text-xs">
+                            Zero Rupees Only
+                        </div>
+                    </div>
+
+                    <!-- Bank Details Block -->
+                    <div class="border-t border-slate-300 pt-2 text-[11px] leading-tight space-y-0.5">
+                        <div class="font-bold text-slate-900 uppercase">Bank Details :</div>
+                        <div class="text-slate-800"><span class="font-semibold">Bank Name :</span> Bank of Baroda</div>
+                        <div class="text-slate-800"><span class="font-semibold">Branch :</span> Timbawadi, Junagadh</div>
+                        <div class="flex flex-wrap gap-x-4">
+                            <span><span class="font-semibold">IFSC Code :</span> BARB0TIMBAW</span>
+                            <span><span class="font-semibold">A/c. No. :</span> 52080200000205</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tax & Total Breakdown Right Block -->
+                <div class="col-span-12 sm:col-span-5 divide-y divide-slate-800 text-xs">
+                    <div class="flex justify-between p-1.5 font-bold">
+                        <span>Total (Subtotal) :</span>
+                        <span id="subtotal">₹ 0.00</span>
+                    </div>
+
+                    <div class="flex justify-between p-1.5 items-center">
+                        <div class="flex items-center gap-1">
+                            <span>CGST @</span>
+                            <input type="number" id="cgst-rate" value="9" min="0" step="0.5" oninput="calculateTotals()" class="w-10 text-center border-b border-slate-400 no-print">
+                            <span class="print-only" id="cgst-rate-print">9</span>%
+                        </div>
+                        <span id="cgst-amount">₹ 0.00</span>
+                    </div>
+
+                    <div class="flex justify-between p-1.5 items-center">
+                        <div class="flex items-center gap-1">
+                            <span>SGST @</span>
+                            <input type="number" id="sgst-rate" value="9" min="0" step="0.5" oninput="calculateTotals()" class="w-10 text-center border-b border-slate-400 no-print">
+                            <span class="print-only" id="sgst-rate-print">9</span>%
+                        </div>
+                        <span id="sgst-amount">₹ 0.00</span>
+                    </div>
+
+                    <div class="flex justify-between p-1.5 items-center">
+                        <div class="flex items-center gap-1">
+                            <span>IGST @</span>
+                            <input type="number" id="igst-rate" value="0" min="0" step="0.5" oninput="calculateTotals()" class="w-10 text-center border-b border-slate-400 no-print">
+                            <span class="print-only" id="igst-rate-print">0</span>%
+                        </div>
+                        <span id="igst-amount">₹ 0.00</span>
+                    </div>
+
+                    <div class="flex justify-between p-2 font-black text-sm bg-slate-100">
+                        <span>G.Total :</span>
+                        <span id="grand-total">₹ 0.00</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Terms & Conditions / Signatures -->
+        <div class="grid grid-cols-12 gap-2 text-[10px] leading-tight pt-2">
+            <div class="col-span-7 space-y-0.5">
+                <div class="font-bold underline text-slate-900">Terms & Conditions :</div>
+                <ol class="list-decimal list-inside space-y-0.5 text-slate-700">
+                    <li>Goods once sold will not be taken back.</li>
+                    <li>Interest will be charged 15% from the due date of invoice.</li>
+                    <li>We are not responsible after delivery of goods.</li>
+                    <li>Subject to JUNAGADH Jurisdiction. | E. & O. E.</li>
+                </ol>
+            </div>
+            
+            <div class="col-span-5 text-right flex flex-col justify-between items-end pt-2">
+                <div class="font-bold text-xs text-slate-900">
+                    For, <span class="uppercase">Krishna Refrigeration Service</span>
+                </div>
+                <div class="pt-10 font-semibold text-slate-800 border-t border-slate-400 w-36 text-center">
+                    Authorized Signatory
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Engine -->
+    <script>
+        // Set default dates on load
+        document.addEventListener("DOMContentLoaded", () => {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('inv-date').value = today;
+            document.getElementById('supply-date').value = today;
+            
+            // Generate initial invoice number
+            document.getElementById('inv-no').value = 'KRS/' + new Date().getFullYear() + '/01';
+
+            // Add initial 4 empty rows
+            for (let i = 0; i < 4; i++) {
+                addRow();
+            }
+
+            // Fill sample data for convenience
+            const rows = document.querySelectorAll('#invoice-items tr');
+            if (rows.length > 0) {
+                rows[0].querySelector('.desc').value = "Commercial Refrigerator Servicing & Gas Charging";
+                rows[0].querySelector('.hsn').value = "998719";
+                rows[0].querySelector('.qty').value = 1;
+                rows[0].querySelector('.rate').value = 2500;
+            }
+            
+            calculateTotals();
+        });
+
+        // Add row dynamically
+        function addRow() {
+            const tbody = document.getElementById('invoice-items');
+            const rowCount = tbody.rows.length + 1;
+
+            const tr = document.createElement('tr');
+            tr.className = "hover:bg-slate-50 transition";
+            tr.innerHTML = `
+                <td class="border border-slate-800 p-1 text-center font-semibold row-sr">${rowCount}</td>
+                <td class="border border-slate-800 p-1">
+                    <input type="text" class="w-full outline-none px-1 desc" placeholder="Description..." oninput="calculateTotals()">
+                </td>
+                <td class="border border-slate-800 p-1">
+                    <input type="text" class="w-full text-center outline-none px-1 hsn" placeholder="HSN">
+                </td>
+                <td class="border border-slate-800 p-1">
+                    <input type="number" min="0" value="" class="w-full text-center outline-none px-1 qty" placeholder="0" oninput="calculateTotals()">
+                </td>
+                <td class="border border-slate-800 p-1">
+                    <input type="number" min="0" step="0.01" value="" class="w-full text-right outline-none px-1 rate" placeholder="0.00" oninput="calculateTotals()">
+                </td>
+                <td class="border border-slate-800 p-1 text-right font-semibold pr-2 row-amount">
+                    ₹ 0.00
+                </td>
+                <td class="border border-slate-800 p-1 text-center no-print">
+                    <button onclick="removeRow(this)" class="text-rose-600 hover:text-rose-800 p-0.5">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+            updateSrNumbers();
+        }
+
+        // Remove row dynamically
+        function removeRow(btn) {
+            const tbody = document.getElementById('invoice-items');
+            if (tbody.rows.length > 1) {
+                btn.closest('tr').remove();
+                updateSrNumbers();
+                calculateTotals();
+            }
+        }
+
+        // Renumber Sr. No. column
+        function updateSrNumbers() {
+            const rows = document.querySelectorAll('#invoice-items tr');
+            rows.forEach((row, index) => {
+                row.querySelector('.row-sr').textContent = index + 1;
+            });
+        }
+
+        // Calculate line amounts, subtotal, taxes, and grand total
+        function calculateTotals() {
+            const rows = document.querySelectorAll('#invoice-items tr');
+            let subtotal = 0;
+
+            rows.forEach(row => {
+                const qty = parseFloat(row.querySelector('.qty').value) || 0;
+                const rate = parseFloat(row.querySelector('.rate').value) || 0;
+                const amount = qty * rate;
+
+                row.querySelector('.row-amount').textContent = '₹ ' + amount.toFixed(2);
+                subtotal += amount;
+            });
+
+            // Tax percentages
+            const cgstRate = parseFloat(document.getElementById('cgst-rate').value) || 0;
+            const sgstRate = parseFloat(document.getElementById('sgst-rate').value) || 0;
+            const igstRate = parseFloat(document.getElementById('igst-rate').value) || 0;
+
+            const cgstAmount = (subtotal * cgstRate) / 100;
+            const sgstAmount = (subtotal * sgstRate) / 100;
+            const igstAmount = (subtotal * igstRate) / 100;
+
+            const grandTotal = Math.round(subtotal + cgstAmount + sgstAmount + igstAmount);
+
+            // Display formatted totals
+            document.getElementById('subtotal').textContent = '₹ ' + subtotal.toFixed(2);
+            document.getElementById('cgst-amount').textContent = '₹ ' + cgstAmount.toFixed(2);
+            document.getElementById('sgst-amount').textContent = '₹ ' + sgstAmount.toFixed(2);
+            document.getElementById('igst-amount').textContent = '₹ ' + igstAmount.toFixed(2);
+            document.getElementById('grand-total').textContent = '₹ ' + grandTotal.toFixed(2);
+
+            // Convert total to words
+            document.getElementById('amount-in-words').textContent = inWords(grandTotal);
+        }
+
+        // Helper function to convert number to Indian Rupees in words
+        function inWords(num) {
+            if (num === 0) return 'Zero Rupees Only';
+
+            const a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
+            const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+            function convert(n) {
+                if (n < 20) return a[n];
+                if (n < 100) return b[Math.floor(n / 10)] + (n % 10 !== 0 ? ' ' + a[n % 10] : ' ');
+                if (n < 1000) return a[Math.floor(n / 100)] + 'Hundred ' + (n % 100 !== 0 ? convert(n % 100) : '');
+                if (n < 100000) return convert(Math.floor(n / 1000)) + 'Thousand ' + (n % 1000 !== 0 ? convert(n % 1000) : '');
+                if (n < 10000000) return convert(Math.floor(n / 100000)) + 'Lakh ' + (n % 100000 !== 0 ? convert(n % 100000) : '');
+                return convert(Math.floor(n / 10000000)) + 'Crore ' + (n % 10000000 !== 0 ? convert(n % 10000000) : '');
+            }
+
+            return 'Rupees ' + convert(num).trim() + ' Only';
+        }
+
+        // Reset Form
+        function resetInvoice() {
+            document.getElementById('cust-name').value = '';
+            document.getElementById('cust-address').value = '';
+            document.getElementById('cust-gstin').value = '';
+            document.getElementById('invoice-items').innerHTML = '';
+            for (let i = 0; i < 4; i++) {
+                addRow();
+            }
+            calculateTotals();
+        }
+    </script>
+</body>
+</html>
