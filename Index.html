@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KRS - Krishna Refrigeration Sales and Service</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    
+    /* Animation for chat widget toggle */
+    .chat-slide-up {
+      animation: slideUp 0.25s ease-out forwards;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen relative">
+
+  <!-- Header / Navigation -->
+  <header class="bg-blue-900 text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center">
+      <div class="flex items-center space-x-3 mb-3 sm:mb-0">
+        <div class="bg-white text-blue-900 p-2 rounded-lg font-black text-2xl tracking-wider shadow">
+          KRS
+        </div>
+        <div>
+          <h1 class="text-xl font-bold leading-tight">KRISHNA REFRIGERATION</h1>
+          <p class="text-xs text-blue-200 tracking-wide uppercase">Sales & Service • Since 1998</p>
+        </div>
+      </div>
+      
+      <!-- Navigation & Action Buttons -->
+      <div class="flex items-center space-x-3">
+        <button onclick="openLoginModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg font-semibold flex items-center space-x-2 transition shadow text-sm">
+          <i class="fa-solid fa-lock"></i>
+          <span>Create Invoice</span>
+        </button>
+        <a href="tel:9898106164" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold flex items-center space-x-2 transition shadow text-sm">
+          <i class="fa-solid fa-phone"></i>
+          <span>Call: 98981 06164</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white py-16 px-4">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div class="space-y-4">
+        <span class="bg-blue-500/30 text-blue-200 text-xs font-semibold px-3 py-1 rounded-full border border-blue-400/30">
+          Trusted Since 1998
+        </span>
+        <h2 class="text-3xl md:text-5xl font-extrabold leading-tight">
+          Commercial Refrigerator Sales & Service
+        </h2>
+        <p class="text-blue-100 text-sm md:text-base">
+          All types of commercial refrigeration solutions, maintenance, and installations in Junagadh and nearby regions.
+        </p>
+        <div class="pt-2 flex flex-wrap gap-4">
+          <button onclick="openLoginModal()" class="bg-emerald-500 text-white font-bold px-6 py-3 rounded-lg shadow hover:bg-emerald-600 transition flex items-center space-x-2">
+            <i class="fa-solid fa-file-invoice"></i>
+            <span>Create Bill / Invoice</span>
+          </button>
+          <a href="https://wa.me/919898106164?text=Hello%20Krishna%20Refrigeration%2C%20I%20would%20like%20to%20inquire%20about%20your%20sales%2Fservices." target="_blank" class="bg-white text-blue-900 font-bold px-6 py-3 rounded-lg shadow hover:bg-gray-100 transition flex items-center space-x-2">
+            <i class="fa-brands fa-whatsapp text-emerald-600 text-lg"></i>
+            <span>WhatsApp Us</span>
+          </a>
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80" alt="Commercial Refrigerator" class="rounded-xl shadow-2xl border-4 border-white/20 object-cover h-72 w-full max-w-md">
+      </div>
+    </div>
+  </section>
+
+  <!-- Services / Expertise Section -->
+  <section class="max-w-6xl mx-auto px-4 py-12 flex-grow">
+    <div class="text-center mb-10">
+      <h3 class="text-2xl md:text-3xl font-bold text-gray-900">Our Expertise</h3>
+      <p class="text-gray-600 text-sm mt-1">Providing reliable commercial refrigeration solutions for over 25 years.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition">
+        <div class="text-blue-600 text-3xl mb-3"><i class="fa-solid fa-snowflake"></i></div>
+        <h4 class="font-bold text-lg mb-2">Sales & Installation</h4>
+        <p class="text-gray-600 text-sm">Top-quality commercial refrigerators, display counters, and deep freezers for businesses.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition">
+        <div class="text-blue-600 text-3xl mb-3"><i class="fa-solid fa-wrench"></i></div>
+        <h4 class="font-bold text-lg mb-2">Repair & Maintenance</h4>
+        <p class="text-gray-600 text-sm">Quick, dependable repair services for all brands and models of commercial refrigeration equipment.</p>
+      </div>
+
+      <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition">
+        <div class="text-blue-600 text-3xl mb-3"><i class="fa-solid fa-shield-halved"></i></div>
+        <h4 class="font-bold text-lg mb-2">Gas Charging & AMC</h4>
+        <p class="text-gray-600 text-sm">Preventative maintenance, gas refilling, compressor overhauls, and annual service support.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Business Info / Location Footer Strip -->
+  <section class="bg-gray-100 border-t border-gray-200 py-10 px-4">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="flex items-start space-x-3">
+        <div class="bg-blue-900 text-white p-3 rounded-lg mt-1 shrink-0"><i class="fa-solid fa-location-dot"></i></div>
+        <div>
+          <h5 class="font-bold text-gray-900">Address</h5>
+          <p class="text-sm text-gray-600">7/8, Pramukh Plaza, Nr. Meldi Mataji Mandir,<br>Madhuram Bypass Road, Junagadh - 362 015</p>
+        </div>
+      </div>
+
+      <div class="flex items-start space-x-3">
+        <div class="bg-blue-900 text-white p-3 rounded-lg mt-1 shrink-0"><i class="fa-solid fa-phone"></i></div>
+        <div>
+          <h5 class="font-bold text-gray-900">Phone & GSTIN</h5>
+          <p class="text-sm text-gray-600">
+            Phone: <a href="tel:9898106164" class="hover:text-blue-600 font-semibold text-gray-800">98981 06164</a><br>
+            GSTIN: <span class="font-mono text-xs font-semibold text-gray-800">24BSQPK1253E1ZW</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-start space-x-3">
+        <div class="bg-blue-900 text-white p-3 rounded-lg mt-1 shrink-0"><i class="fa-solid fa-envelope"></i></div>
+        <div>
+          <h5 class="font-bold text-gray-900">Email & Hours</h5>
+          <p class="text-sm text-gray-600">
+            Email: <a href="mailto:vipulkacha1538@gmail.com" class="hover:text-blue-600 text-gray-800">vipulkacha1538@gmail.com</a><br>
+            Hours: Mon - Sat: 9:00 AM - 8:00 PM
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-blue-950 text-blue-300 py-4 text-center text-xs">
+    <div class="max-w-6xl mx-auto px-4">
+      &copy; 1998 - Present Krishna Refrigeration Service (KRS). All rights reserved.
+    </div>
+  </footer>
+
+  <!-- ================= FLOATING ACTION BUTTONS ================= -->
+
+  <!-- Floating WhatsApp Button (Bottom Right) -->
+  <a href="https://wa.me/919898106164?text=Hello%20Krishna%20Refrigeration%2C%20I%20would%20like%20to%20inquire%20about%20your%20sales%2Fservices." 
+     target="_blank" 
+     aria-label="Chat on WhatsApp"
+     class="fixed bottom-6 right-6 bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl z-40 transition-transform transform hover:scale-110">
+    <i class="fa-brands fa-whatsapp text-3xl"></i>
+  </a>
+
+  <!-- Floating Customer Live Chat Assistant Toggle Button (Bottom Left) -->
+  <button onclick="toggleChatWidget()" 
+          aria-label="Open Live Support Chat"
+          class="fixed bottom-6 left-6 bg-blue-900 hover:bg-blue-800 text-white px-4 py-3 rounded-full flex items-center space-x-2 shadow-2xl z-40 transition-transform transform hover:scale-105">
+    <i class="fa-solid fa-comments text-xl text-yellow-400"></i>
+    <span class="font-semibold text-sm hidden sm:inline">Ask Assistant</span>
+  </button>
+
+  <!-- Interactive AI/Client Live Chat Popup Widget -->
+  <div id="chat-widget" class="hidden fixed bottom-24 left-4 sm:left-6 w-[calc(100%-2rem)] sm:w-80 md:w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 flex flex-col h-[420px] chat-slide-up overflow-hidden">
+    <!-- Chat Header -->
+    <div class="bg-blue-900 text-white p-3.5 flex items-center justify-between">
+      <div class="flex items-center space-x-2.5">
+        <div class="relative">
+          <div class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center font-bold text-xs text-yellow-400">
+            KRS
+          </div>
+          <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-blue-900"></span>
+        </div>
+        <div>
+          <h4 class="font-bold text-sm leading-tight">KRS Support Bot</h4>
+          <p class="text-[10px] text-blue-200">Online | Instant Service Help</p>
+        </div>
+      </div>
+      <button onclick="toggleChatWidget()" class="text-blue-200 hover:text-white p-1">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+
+    <!-- Chat Messages Box -->
+    <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-3 bg-slate-50 text-xs">
+      <div class="flex items-start space-x-2">
+        <div class="w-6 h-6 rounded-full bg-blue-900 text-white text-[10px] font-bold flex items-center justify-center shrink-0">KRS</div>
+        <div class="bg-white border border-gray-200 rounded-xl rounded-tl-none p-2.5 shadow-sm max-w-[85%] text-gray-700">
+          Hello! 👋 Welcome to **Krishna Refrigeration Service**. How can I help you today?
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Quick Reply Suggestions -->
+    <div class="p-2 bg-white border-t border-gray-100 flex flex-wrap gap-1 text-[11px]">
+      <button onclick="sendQuickReply('Location & Address')" class="bg-blue-50 text-blue-800 hover:bg-blue-100 px-2 py-1 rounded-md border border-blue-200 transition">
+        📍 Address
+      </button>
+      <button onclick="sendQuickReply('Phone & Contact')" class="bg-blue-50 text-blue-800 hover:bg-blue-100 px-2 py-1 rounded-md border border-blue-200 transition">
+        📞 Phone
+      </button>
+      <button onclick="sendQuickReply('Book Service / Gas Repair')" class="bg-blue-50 text-blue-800 hover:bg-blue-100 px-2 py-1 rounded-md border border-blue-200 transition">
+        🔧 Book Repair
+      </button>
+      <button onclick="sendQuickReply('Working Hours')" class="bg-blue-50 text-blue-800 hover:bg-blue-100 px-2 py-1 rounded-md border border-blue-200 transition">
+        ⏰ Hours
+      </button>
+    </div>
+
+    <!-- Input Form -->
+    <form onsubmit="handleUserChat(event)" class="p-2 border-t border-gray-200 bg-white flex items-center space-x-1.5">
+      <input type="text" id="chat-input" placeholder="Type your message..." class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-blue-900">
+      <button type="submit" class="bg-blue-900 hover:bg-blue-800 text-white px-3 py-2 rounded-lg text-xs transition">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- ================= AUTHENTICATION MODAL ================= -->
+  <div id="login-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-gray-200 max-w-md w-full p-6 relative chat-slide-up">
+      <!-- Close Button -->
+      <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 bg-blue-100 text-blue-900 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+          <i class="fa-solid fa-user-lock"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900">Staff Invoice Portal</h3>
+        <p class="text-xs text-gray-500 mt-1">Please enter your KRS staff credentials to proceed</p>
+      </div>
+
+      <!-- Error Banner -->
+      <div id="login-error" class="hidden mb-4 p-3 bg-rose-50 border border-rose-200 rounded-lg text-rose-700 text-xs flex items-center space-x-2">
+        <i class="fa-solid fa-triangle-exclamation text-rose-500 text-sm"></i>
+        <span id="error-message">Invalid Username or Password</span>
+      </div>
+
+      <!-- Credentials Form -->
+      <form onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Username</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+              <i class="fa-solid fa-user text-xs"></i>
+            </span>
+            <input type="text" id="username" required class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent" placeholder="Enter username">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Password</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+              <i class="fa-solid fa-key text-xs"></i>
+            </span>
+            <input type="password" id="password" required class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-900 focus:border-transparent" placeholder="Enter password">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-semibold py-2.5 rounded-lg text-sm transition shadow-md flex items-center justify-center space-x-2">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span>Login to Generator</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript Engine for Modal & Interactive Chatbot -->
+  <script>
+    // Authentication Modal Handlers
+    function openLoginModal() {
+      // Check if user is already authenticated in this session
+      if (sessionStorage.getItem('krs_auth') === 'true') {
+        window.location.href = 'invoice.html';
+        return;
+      }
+      document.getElementById('login-modal').classList.remove('hidden');
+      document.getElementById('username').focus();
+    }
+
+    function closeLoginModal() {
+      document.getElementById('login-modal').classList.add('hidden');
+      document.getElementById('login-error').classList.add('hidden');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value;
+
+      // Handle spacing variations gracefully for 'Hari@ 2025' or 'Hari@2025'
+      const cleanPass = pass.replace(/\s+/g, ' ');
+
+      if (user.toLowerCase() === 'upen' && (cleanPass === 'Hari@ 2025' || cleanPass === 'Hari@2025')) {
+        sessionStorage.setItem('krs_auth', 'true');
+        window.location.href = 'invoice.html';
+      } else {
+        const errBox = document.getElementById('login-error');
+        document.getElementById('error-message').textContent = 'Incorrect Username or Password. Please try again.';
+        errBox.classList.remove('hidden');
+      }
+    }
+
+    // Toggle Chat Assistant Widget
+    function toggleChatWidget() {
+      const widget = document.getElementById('chat-widget');
+      widget.classList.toggle('hidden');
+    }
+
+    // Send Quick Reply from buttons
+    function sendQuickReply(text) {
+      document.getElementById('chat-input').value = text;
+      handleUserChat(new Event('submit'));
+    }
+
+    // Process Chatbot Response
+    function handleUserChat(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chatBox = document.getElementById('chat-messages');
+
+      // Append User Message
+      const userMsgHtml = `
+        <div class="flex items-start justify-end space-x-2">
+          <div class="bg-blue-900 text-white rounded-xl rounded-tr-none p-2.5 shadow-sm max-w-[85%]">
+            ${escapeHtml(text)}
+          </div>
+        </div>
+      `;
+      chatBox.insertAdjacentHTML('beforeend', userMsgHtml);
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Generate Auto Bot Reply
+      setTimeout(() => {
+        const botReply = getBotResponse(text.toLowerCase());
+        const botMsgHtml = `
+          <div class="flex items-start space-x-2">
+            <div class="w-6 h-6 rounded-full bg-blue-900 text-white text-[10px] font-bold flex items-center justify-center shrink-0">KRS</div>
+            <div class="bg-white border border-gray-200 rounded-xl rounded-tl-none p-2.5 shadow-sm max-w-[85%] text-gray-700">
+              ${botReply}
+            </div>
+          </div>
+        `;
+        chatBox.insertAdjacentHTML('beforeend', botMsgHtml);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 400);
+    }
+
+    // Bot Knowledge Logic
+    function getBotResponse(query) {
+      if (query.includes('location') || query.includes('address') || query.includes('where')) {
+        return "📍 **Address:** 7/8, Pramukh Plaza, Nr. Meldi Mataji Mandir, Madhuram Bypass Road, Junagadh - 362 015, Gujarat.";
+      } else if (query.includes('phone') || query.includes('call') || query.includes('contact') || query.includes('number')) {
+        return "📞 You can reach us directly at **+91 98981 06164** or email us at **vipulkacha1538@gmail.com**.";
+      } else if (query.includes('hour') || query.includes('open') || query.includes('time')) {
+        return "⏰ **Working Hours:** Monday to Saturday, 9:00 AM to 8:00 PM.";
+      } else if (query.includes('book') || query.includes('service') || query.includes('repair') || query.includes('gas') || query.includes('refrigerator')) {
+        return "🔧 We handle all commercial refrigerator repairs, gas charging, & AMC! Please click the **WhatsApp button** below or call **98981 06164** to schedule an immediate technician visit.";
+      } else {
+        return "Thank you for reaching out! For detailed inquiries or instant service requests, please feel free to call us at **98981 06164** or message us on **WhatsApp**.";
+      }
+    }
+
+    // Utility: Escape HTML
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.innerText = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>
